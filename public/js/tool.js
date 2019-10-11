@@ -1,7 +1,8 @@
+
 /**
  * 获取元素
  */
-function $$(s) {
+export function $$(s) {
     if (document.querySelectorAll(s).length === 1) {
         return document.querySelector(s);
     }
@@ -15,7 +16,7 @@ function $$(s) {
  * @param msg
  * @returns {boolean}
  */
-function requiredValidator(obj, exceptArr, msg = "所有项都是必填的!") {
+export function requiredValidator(obj, exceptArr, msg = "所有项都是必填的!") {
     // 将对象中的某些属性排除在必填项之外
     function except(key) {
         if (exceptArr && exceptArr instanceof Array) {
@@ -38,7 +39,7 @@ function requiredValidator(obj, exceptArr, msg = "所有项都是必填的!") {
  * 获取表单数据
  * @param elem
  */
-function getFormData(elem) {
+export function getFormData(elem) {
     if (!(elem instanceof HTMLElement)) {
         throw 'getFormData没有参数或者参数错误';
     }
@@ -51,8 +52,3 @@ function getFormData(elem) {
 
 
 
-window.onload = function () {
-    for (let i = 0; i < $$('input').length; i++) {
-        $$('input')[i].setAttribute("autocomplete", "off");
-    }
-};

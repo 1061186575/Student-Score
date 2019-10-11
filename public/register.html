@@ -7,8 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>register</title>
     <link rel="stylesheet" href="css/zp-global.css">
-    <script src="js/tool.js"></script>
-    <script src="lib/jq.js"></script>
 </head>
 <style>
     body{
@@ -55,7 +53,7 @@
                 <input type="text" autofocus class="nick zp-input" placeholder="昵称">
                 <input type="text"  class="account zp-input" placeholder="账号">
                 <input type="password" class="pwd zp-input" placeholder="密码">
-                <input type="password" class="pwd2 zp-input" placeholder="确认密码">
+                <input type="password" id="confirm" class="pwd2 zp-input" placeholder="确认密码">
 
 
                 <button class="btn register-button">注册</button>
@@ -65,26 +63,22 @@
         <div class="footer"></div>
     </div>
 </div>
-<script>
+<script type="module">
+    import {$$, requiredValidator} from './js/tool.js'
+    import myFetch from './js/fetch.js'
+
     var nick = $$(".nick");
     var account = $$(".account");
     var pwd = $$(".pwd");
     var pwd2 = $$(".pwd2");
     var register_button = $$(".register-button");
 
-    // function validator(regData) {
-    //     if (pwd.value !== pwd2.value) {
-    //         alert('请确认两次密码是否一致!');
-    //         return false;
-    //     }
-    //     for (let item in regData) {
-    //         if (regData[item] === '') {
-    //             alert('所有项都是必填的!');
-    //             return false;
-    //         }
-    //     }
-    //     return true;
-    // }
+    $$('#confirm').addEventListener('keyup', function (e) {
+        if (e.keyCode === 13) {
+            register_button.onclick();
+        }
+    });
+
 
     register_button.onclick = function () {
         var regData = {
@@ -95,21 +89,29 @@
         if (pwd.value !== pwd2.value) {
             alert('请确认两次密码是否一致!');
         } else if (requiredValidator(regData)) {
-            $.ajax({
-                type: 'POST',
-                url: '/api/reg',
-                data: regData,
-                success(d){
-                    // console.log("d: ", d);
-                    if(d.code === 0){
-                        alert('注册成功');
-                        location.href = './login.html';
-                    }
-                },
-                error(e){
-                    alert('服务器错误');
+
+            myFetch('/api/reg', regData, 'post').then(data => {
+                if (data.code === 0) {
+                    alert('注册成功');
+                    location.href = './login.html';
                 }
-            })
+            });
+
+            // $.ajax({
+            //     type: 'POST',
+            //     url: '/api/reg',
+            //     data: regData,
+            //     success(d){
+            //         // console.log("d: ", d);
+            //         if(d.code === 0){
+            //             alert('注册成功');
+            //             location.href = './login.html';
+            //         }
+            //     },
+            //     error(e){
+            //         alert('服务器错误');
+            //     }
+            // })
         }
 
     }

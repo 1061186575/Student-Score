@@ -7,9 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>login</title>
     <link rel="stylesheet" href="css/zp-global.css">
-    <script src="js/tool.js"></script>
-    <script src="lib/jq.js"></script>
-
+    <!--<script src="lib/jq.js"></script>-->
 
 </head>
 <body>
@@ -21,7 +19,7 @@
     body{
         /*background: #eeeeee;*/
         overflow: hidden;
-        background: url("../img/31H58PICbmC_1024.jpg");
+        background: url("./img/31H58PICbmC_1024.jpg");
     }
 
     .main {
@@ -88,7 +86,10 @@
     </div>
 </div>
 
-<script>
+<script type="module">
+    import {$$, requiredValidator} from './js/tool.js';
+    import myFetch from './js/fetch.js'
+
     var account = $$(".account");
     var pwd = $$(".pwd");
     var login_button = $$(".login-button");
@@ -111,24 +112,36 @@
             pwd: pwdVal
         };
         if (requiredValidator(loginData, [], '请输入账号和密码')) {
-            // console.log("loginData: ",loginData );
 
-            $.ajax({
-                type: 'post',
-                url: '/api/login',
-                data: loginData,
-                success(res) {
-                    console.log("res: ", res);
-                    if (res.code === 0) {
+            myFetch('/api/login', loginData, 'post')
+                .then(data => {
+                    if (data.code === 0) {
                         location.href = './student.html'
                     } else {
-                        alert(res.msg);
+                        alert(data.msg);
                     }
-                },
-                error(e){
+                })
+                .catch(err => {
+                    console.log("err: ", err);
                     alert('服务器错误');
-                }
-            })
+                })
+
+            // $.ajax({
+            //     type: 'post',
+            //     url: '/api/login',
+            //     data: loginData,
+            //     success(res) {
+            //         console.log("res: ", res);
+            //         if (res.code === 0) {
+            //             location.href = './student.html'
+            //         } else {
+            //             alert(res.msg);
+            //         }
+            //     },
+            //     error(e){
+            //         alert('服务器错误');
+            //     }
+            // })
         }
 
     }
