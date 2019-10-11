@@ -1,0 +1,101 @@
+.zp-input{
+    font-size: 16px;
+    width: 315px;
+    height: 30px;
+    display: block;
+    margin: 10px;
+    outline: none;
+    font-family: "Arial";
+    border: 1px solid #eee;
+}
+.zp-input:hover{
+    border: 1px solid #ccc;
+    box-shadow: 0px 0px 5px #74ff38;
+}
+
+.zp-inputT{
+    height: 25px;
+}
+
+/*按钮*/
+.btn {
+    display: inline-block;
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 18px;
+    background-color: #009688;
+    color: #fff;
+    white-space: nowrap;
+    text-align: center;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    border-radius: 4px;
+    text-decoration: none;
+}
+.btn:hover {
+    opacity: .8;
+    filter: alpha(opacity=80);
+    color: #fff
+}
+.btn:active {
+    opacity: 1;
+    filter: alpha(opacity=100)
+}
+.btn-delete {
+    background-color: #cc614b!important;;
+}
+.btn-radius {
+    border-radius: 20px;
+}
+.btn-normal {
+    background-color: #1E9FFF!important;;
+}
+.btn-danger {
+    background-color: #FF5722!important;;
+}
+.btn-warm {
+    background-color: #FFB800!important;
+}
+.btn-disabled {
+    background-color: #C9C9C9!important;;
+    cursor: not-allowed;
+}
+input[disabled] {
+    cursor: not-allowed;
+    border: 1px solid gray;
+}
+/*动态按钮*/
+.button {
+    width: 80px;
+    height: 30px;
+    display: inline-block;
+    padding: 5px 8px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px #999;
+}
+.button:hover {opacity: 0.8}
+.button:active {
+    background-color: #3e8e41;
+    box-shadow: 0 3px #666;
+    transform: translateY(3px);
+}
+#all h1[data-art] {
+    text-shadow:0 -1px 5px rgba(0,0,0,.4);
+    color: #60497C;
+    font-size: 2em;
+    text-align: center;
+    font-weight: bold;
+    word-spacing:20px;
+    margin-top: 10px;
+}

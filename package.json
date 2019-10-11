@@ -1,0 +1,19 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./app.js",
+    "dev": "node ./app.js"
+  },
+  "dependencies": {},
+  "description": "",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

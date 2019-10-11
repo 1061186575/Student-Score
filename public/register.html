@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>register</title>
+    <link rel="stylesheet" href="css/zp-global.css">
+    <script src="js/tool.js"></script>
+    <script src="lib/jq.js"></script>
+</head>
+<style>
+    body{
+        background: #eeeeee;
+        overflow: hidden;
+    }
+    .main {
+        width: 380px;
+        height: 315px;
+        padding: 10px;
+        margin: 15%  auto ;
+    }
+    .register-box{
+        width: 340px;
+        height: 305px;
+        margin: auto;
+    }
+    .title{
+        text-align: center;
+        font-size: 24px;
+        font-weight: 500;
+        margin-bottom: 15px;
+    }
+    .account, .pwd, .pwd2, .nick {
+        text-align: center;
+    }
+    .register-button {
+        width: 315px !important;
+        display: block !important;
+        margin: 5px auto;
+    }
+    .main{
+        background: rgb(250,250,250);
+    }
+
+</style>
+<body>
+<div id="all">
+    <div class="wrapper-login">
+        <div class="header"></div>
+        <div class="main">
+            <div class="register-box">
+                <div class="title">免费注册学生成绩管理系统</div>
+                <input type="text" autofocus class="nick zp-input" placeholder="昵称">
+                <input type="text"  class="account zp-input" placeholder="账号">
+                <input type="password" class="pwd zp-input" placeholder="密码">
+                <input type="password" class="pwd2 zp-input" placeholder="确认密码">
+
+
+                <button class="btn register-button">注册</button>
+
+            </div>
+        </div>
+        <div class="footer"></div>
+    </div>
+</div>
+<script>
+    var nick = $$(".nick");
+    var account = $$(".account");
+    var pwd = $$(".pwd");
+    var pwd2 = $$(".pwd2");
+    var register_button = $$(".register-button");
+
+    // function validator(regData) {
+    //     if (pwd.value !== pwd2.value) {
+    //         alert('请确认两次密码是否一致!');
+    //         return false;
+    //     }
+    //     for (let item in regData) {
+    //         if (regData[item] === '') {
+    //             alert('所有项都是必填的!');
+    //             return false;
+    //         }
+    //     }
+    //     return true;
+    // }
+
+    register_button.onclick = function () {
+        var regData = {
+            nick: nick.value,
+            account: account.value,
+            pwd: pwd.value,
+        };
+        if (pwd.value !== pwd2.value) {
+            alert('请确认两次密码是否一致!');
+        } else if (requiredValidator(regData)) {
+            $.ajax({
+                type: 'POST',
+                url: '/api/reg',
+                data: regData,
+                success(d){
+                    // console.log("d: ", d);
+                    if(d.code === 0){
+                        alert('注册成功');
+                        location.href = './login.html';
+                    }
+                },
+                error(e){
+                    alert('服务器错误');
+                }
+            })
+        }
+
+    }
+
+
+</script>
+</body>
+</html>

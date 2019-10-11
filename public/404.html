@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<h1>页面没有找到   404 Not Found</h1>
+
+<script>
+    var jumpTime = 5; // 多少秒后跳转到首页
+    var h2Elem = document.createElement('h2');
+    h2Elem.innerHTML = `<strong id="seconds">${jumpTime}</strong>秒后会跳转到首页`;
+    document.body.appendChild(h2Elem);
+
+    let timer = setInterval(()=>{
+        jumpTime--;
+        document.getElementById('seconds').textContent = jumpTime;
+    },1000);
+
+    setTimeout(()=>{
+        clearInterval(timer);
+        location.href = '/';
+    }, jumpTime * 1000);
+</script>
+</body>
+</html>

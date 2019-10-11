@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>找回密码</title>
+    <link rel="stylesheet" href="css/zp-global.css">
+
+</head>
+<style>
+    body{
+        background: #eeeeee;
+        overflow: hidden;
+    }
+    .main {
+        width: 380px;
+        height: 315px;
+        padding: 10px;
+        margin: 15%  auto ;
+    }
+    .find-box{
+        width: 340px;
+        height: 305px;
+        margin: auto;
+    }
+    .title{
+        text-align: center;
+        font-size: 24px;
+        font-weight: 500;
+        margin-bottom: 15px;
+    }
+    .account, .verify_code {
+        text-align: center;
+        display: inline;
+    }
+    .verify_code {
+        display: inline;
+        width: 170px;
+    }
+    .find-button {
+        width: 315px !important;
+        display: block !important;
+        margin: 5px auto;
+    }
+    .verify_code_img{
+        width: 128px;
+        height: 34px;
+        cursor: pointer;
+        position: relative;
+        top: 8px;
+    }
+    .main{
+        background: rgb(250,250,250);
+    }
+
+</style>
+<body>
+<div id="all">
+    <div class="wrapper-login">
+        <div class="header"></div>
+        <div class="main">
+            <div class="find-box">
+                <div class="title">找回密码</div>
+                <input type="text" autofocus class="account zp-input" placeholder="请输入账号">
+                <input type="text" class="verify_code zp-input" placeholder="请输入验证码">
+                <img src="verify_code.png" alt="加载失败" class="verify_code_img">
+
+                <button class="btn find-button" onclick="alert('暂未开放')">找回密码</button>
+
+            </div>
+        </div>
+        <div class="footer"></div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>login</title>
+    <link rel="stylesheet" href="css/zp-global.css">
+    <script src="js/tool.js"></script>
+    <script src="lib/jq.js"></script>
+
+
+</head>
+<body>
+<style>
+    a{
+        color: #029789;
+        text-decoration: none;
+    }
+    body{
+        /*background: #eeeeee;*/
+        overflow: hidden;
+        background: url("../img/31H58PICbmC_1024.jpg");
+    }
+
+    .main {
+        width: 380px;
+        height: 280px;
+        padding: 30px 10px 10px 10px;
+        margin: 11%  auto ;
+    }
+    .login-box{
+        width: 340px;
+        height: 305px;
+        margin: auto;
+    }
+    .title{
+        text-align: center;
+        font-size: 24px;
+        font-weight: 500;
+        margin-bottom: 15px;
+    }
+    .account, .pwd {
+        text-align: center;
+    }
+    .login-button {
+        width: 315px !important;
+        display: block !important;
+        margin: 5px auto;
+    }
+    .forget{
+        position: relative;
+        left: 15px;
+    }
+    .register{
+        position: relative;
+        left: 215px;
+    }
+    .main{
+        background: rgb(250,250,250);
+    }
+    .footer{
+        /*height: 30px;*/
+        /*line-height: 30px;*/
+        /*border: 1px solid #000;*/
+    }
+</style>
+
+<div id="all">
+    <div class="wrapper-login">
+        <div class="header"></div>
+        <div class="main">
+            <div class="login-box">
+                <div class="title">学生成绩管理系统</div>
+
+                <form action="" id="fd">
+                    <input type="text" autofocus name="account" class="account zp-input" placeholder="账号">
+                    <input type="password" name="pwd" class="pwd zp-input" placeholder="密码">
+                </form>
+
+                <button class="btn login-button">登录</button>
+                <a href="./forget.html" class="forget">忘记密码?</a>
+                <a href="./register.html" class="register">注册</a>
+            </div>
+        </div>
+        <div class="footer"></div>
+    </div>
+</div>
+
+<script>
+    var account = $$(".account");
+    var pwd = $$(".pwd");
+    var login_button = $$(".login-button");
+    // var forget = $$(".forget");
+    // var register = $$(".register");
+
+    pwd.addEventListener('keyup', function (e) {
+        if (e.keyCode === 13) {
+            login();
+        }
+    });
+
+    login_button.onclick = login;
+
+    function login() {
+        var accountVal = account.value;
+        var pwdVal = pwd.value;
+        var loginData = {
+            account: accountVal,
+            pwd: pwdVal
+        };
+        if (requiredValidator(loginData, [], '请输入账号和密码')) {
+            // console.log("loginData: ",loginData );
+
+            $.ajax({
+                type: 'post',
+                url: '/api/login',
+                data: loginData,
+                success(res) {
+                    console.log("res: ", res);
+                    if (res.code === 0) {
+                        location.href = './student.html'
+                    } else {
+                        alert(res.msg);
+                    }
+                },
+                error(e){
+                    alert('服务器错误');
+                }
+            })
+        }
+
+    }
+
+
+
+</script>
+</body>
+</html>

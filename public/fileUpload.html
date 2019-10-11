@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="file" name="file" id="file" style="width: 200px;" multiple>
+
+<button type="button" id="fileUpload">上传文件</button>
+<div id="fileInfo"></div>
+
+<script>
+    /**
+     *  文件上传
+     * */
+    file.onchange = function() {
+        $$('#fileInfo').innerHTML = "";
+        var file = $$('#file').files;
+        var fileSize = 0;
+        console.log("file: ", file);
+        $$('#fileInfo').append( '文件名称为: ' );
+        for (let i = 0; i < file.length; i++) {
+
+            fileSize += file[i].size / 1024;
+
+            let div = document.createElement('div');
+            div.textContent = file[i].name;
+
+            $$('#fileInfo').append( div );
+        }
+
+
+        $$('#fileInfo').append( '文件大小为: ' );
+        if (fileSize < 1024) {
+            $$('#fileInfo').append(fileSize.toFixed(2) + 'KB');
+        } else if (fileSize < 1024 * 1024) {
+            $$('#fileInfo').append( (fileSize / 1024).toFixed(2) + 'MB' );
+        } else if (fileSize < 1024 * 1024 * 1024 ){
+            $$('#fileInfo').append( ( fileSize / 1024 / 1024).toFixed(2) + 'GB' );
+        } else {
+            $$('#fileInfo').append( ( fileSize / 1024 / 1024 / 1024 ).toFixed(2) + 'TB' );
+        }
+    }
+
+    fileUpload.onclick = function(){
+
+        // studying await
+        alert('studying await')
+
+    };
+</script>
+</body>
+</html>

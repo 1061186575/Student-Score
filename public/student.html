@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/zp-global.css">
+    <script src="js/tool.js"></script>
+    <script src="lib/jq.js"></script>
+    <script src="lib/vue.js"></script>
+</head>
+<body>
+
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    html, body {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+    #add {
+        width: 300px;
+        height: 400px;
+        overflow: auto;
+        margin: auto;
+        /*border: 1px solid #000;*/
+        position: fixed;
+        /*top: 100px;*/
+        /*left: 500px;*/
+        z-index: 999;
+        background: #FFF;
+        opacity: 1;
+        box-shadow: 0 0 50px rgba(0,0,0,.3);
+    }
+
+    #add > form input.zp-input {
+    width: 150px ;
+    display: inline-block;
+    }
+    #add > form label {
+    width: 50px;
+    text-align: center;
+    margin: 0 10px;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    }
+    #add .title {
+        height: 30px;
+        line-height: 30px;
+        background-color: rgb(248,248,248);
+        border-bottom: 1px solid #eee;
+        cursor: move;
+        margin-right: 30px;
+    }
+    #add .close{
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        width: 40px;
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+        background-color: rgb(248,248,248);
+        border-bottom: 1px solid #eee;
+    }
+    #add .close:hover{
+        background: red;
+        cursor: pointer;
+    }
+    #add .ensure{
+        position: absolute;
+        right: 20px;
+        bottom: 10px;
+    }
+    table{
+        border-spacing: 0px;
+    }
+    table th, table td {
+        width: 100px;
+        height: 50px;
+        line-height: 50px;
+        display: inline-block;
+        text-align: center;
+        border: 1px solid gray;
+        margin: -1px 0 0 -1px;
+    }
+    #shade {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        background: #000;
+        opacity: 0.4;
+        z-index: 998;
+    }
+</style>
+
+<div id="shade" hidden></div>
+<button class="button add_button" style="background-color: rgb(30,159,225);margin: 50px;">添加学生</button>
+<button class="button btn-danger" onclick="location.href='./login.html'">退出登录</button>
+
+<div id="app">
+    <div id="show" >
+        <table>
+            <thead>
+            <tr>
+                <th>姓名</th>
+                <th>年龄</th>
+                <th>学号</th>
+                <th>语文</th>
+                <th>数学</th>
+                <th>英语</th>
+                <th style="width: 200px">操作</th>
+            </tr>
+            </thead>
+            <tbody v-for="(stu, index) in students" :key="index">
+                <tr>
+                    <td style="display: none">{{stu.id}}</td>
+                    <td>{{stu.name}}</td>
+                    <td>{{stu.age}}</td>
+                    <td>{{stu.student_number}}</td>
+                    <td>{{stu.chinese}}</td>
+                    <td>{{stu.math}}</td>
+                    <td>{{stu.english}}</td>
+                    <td style="width: 200px">
+                        <button type="button" data-event="modify" class="btn btn-normal">修改</button>
+                        <button type="button" data-event="delete" class="btn btn-warm">删除</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<div id="add" hidden>
+    <div class="title">
+        <span style="margin-left: 10px;">添加学生信息</span>
+        <span class="close">X</span>
+    </div>
+
+    <form action="" id="form">
+        <input type="text" name="id"  hidden >
+        <label>姓名</label><input type="text" name="name" class="zp-input" >
+        <label>年龄</label><input type="text" name="age" class="zp-input" >
+        <label>学号</label><input type="text" name="student_number" class="zp-input">
+        <label>语文</label><input type="text" name="chinese" class="zp-input">
+        <label>数学</label><input type="text" name="math" class="zp-input">
+        <label>英语</label><input type="text" name="english" class="zp-input">
+        <input type="reset" id="reset" hidden>
+    </form>
+
+    <button class="ensure button">确定</button>
+</div>
+
+
+<script>
+    window.onload = function () {
+
+        let app = new Vue({
+            el: '#app',
+            data: {
+                students: []
+            },
+            mounted() {
+                // 加载学生数据
+                this.getData();
+            },
+            methods: {
+                getData() {
+                    let that = this;
+                    $.ajax({
+                        url: '/api/getStudent',
+                        success(data) {
+                            if (data.code === 0) {
+                                that.students = data.data;
+                            }
+                        }
+                    })
+                }
+            }
+        });
+
+        /**
+         *  功能: 显示添加框并让其居中
+         **/
+        function add_box_center() {
+            $$('#shade').hidden = false;
+            $$('#add').hidden = false;
+            document.body.style.overflow = 'hidden';
+            $$('#add span')[0].textContent = "添加学生信息";
+            let left, top;
+            left = document.documentElement.clientWidth / 2;
+            top = document.documentElement.clientHeight / 2;
+
+            $$('#add').style.left = (left - 150) + 'px';
+            $$('#add').style.top = (top - 200) + 'px';
+        };
+        $$('.add_button').onclick = add_box_center;
+        /**
+         *  功能: 关闭添加框
+         * */
+        function close_box() {
+            $$('#shade').hidden = true;
+            $$('#add').hidden = true;
+            $$('#reset').click();
+            document.body.style.overflow = '';
+        };
+        $$('.close').onclick = close_box;
+
+
+        /**
+         *  功能: 拖动添加框
+         * */
+        $$('.title').onmousedown = function () {
+            $$('.title').onmousemove = function (e) {
+                $$('#add').style.left = e.clientX - 150 + 'px';
+                $$('#add').style.top = e.clientY - 15 + 'px';
+            }
+        };
+        $$('.title').onmouseup = function () {
+            $$('.title').onmousemove = null;
+        };
+
+
+
+        /**
+         *   发送添加或修改的数据到后端
+         **/
+        $$('.ensure').onclick = function () {
+            let data = getFormData(document.forms[0]);
+            console.log("postData",data);
+            if (requiredValidator(data, ['id'])) {
+                postData(data);
+            }
+        };
+
+        /**
+         *  监听删除和修改按钮的点击
+         */
+        document.onclick = function (e) {
+            if (!e.target && !e.target.dataset) return;
+            if (e.target.dataset.event === 'delete') {
+                var id = e.target.parentElement.parentElement.children[0].textContent;
+                // console.log("id: ", id);
+                if ( confirm('确定删除?') ){
+                    deleteData(id);
+                }
+            } else if (e.target.dataset.event === 'modify') {
+                add_box_center();
+                $$('#add span')[0].textContent = "修改学生信息";
+                let elem = e.target.parentElement.parentElement;
+
+                // 给修改(添加)框赋值
+                for (let i = 0, j = 0; i < elem.children.length - 1; i++, j += 2) {
+                    $$('#form').children[j].value = elem.children[i].textContent;
+                }
+            }
+        };
+
+
+        // 添加或者修改学生信息
+        function postData(postData) {
+            $.ajax({
+                type: 'post',
+                url: '/api/postStudent',
+                data: postData,
+                success(data) {
+                    // console.log("data: ", data);
+                    if (data.code === 0) {
+                        close_box();
+                        app.getData();
+                    }
+                },
+                error() {
+                    alert("操作失败");
+                }
+            })
+        };
+        function deleteData(id) {
+            $.ajax({
+                type: 'post',
+                url: '/api/deleteStudent',
+                data: {id: id},
+                success(data) {
+                    console.log("data: ", data);
+                    if (data.code === 0) {
+                        app.getData();
+                    }
+                },
+                error() {
+                    alert("操作失败");
+                }
+            })
+        }
+
+
+    };
+
+
+
+
+
+</script>
+
+</body>
+</html>
