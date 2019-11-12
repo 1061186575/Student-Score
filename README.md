@@ -1,10 +1,14 @@
-# 学生成绩管理系统
+﻿# 学生成绩管理系统
 
 
 ### 启动方式
-先把mysql.js的"数据库连接"配置成自己的数据库,
-然后把自己的数据库里的字段改成mysql.js里对应的字段,
-并启动自己的数据库,然后执行下面的操作.
+先创建一个"nodejs"数据库,
+然后把/sql目录下的mysql.js的"数据库连接"配置改成自己的数据库信息,
+在nodejs数据库里创建user表和student表,
+user表新增user_id(自增),nick,account,pwd 4个字段,
+student表新增id(自增),user_id(自增),name,age,student_number,chinese,math,english 8个字段,
+启动自己的数据库,
+然后执行下面的操作.
 
 ``` bash
 # 1.安装node.js (下载安装即可)
@@ -19,10 +23,5 @@ npm run dev
 然后打开浏览器访问: <http://localhost:3000/>
 
 
-这个项目还有很多没有完善的地方:  
-还没有数据格式验证  
-还没有数据大小验证  
-还没有设置路由权限  
-等等...
 
 
