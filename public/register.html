@@ -92,8 +92,10 @@
 
             myFetch('/api/reg', regData, 'post').then(data => {
                 if (data.code === 0) {
-                    alert('注册成功');
+                    alert(data.msg);
                     location.href = './login.html';
+                } else {
+                    alert(data.msg);
                 }
             });
 

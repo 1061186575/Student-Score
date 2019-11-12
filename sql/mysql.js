@@ -19,7 +19,7 @@ conn.connect();
 function login(req, res) {
     let loginData = req.body;
     let LoginResult = null;
-    let sql = 'SELECT * FROM reg';
+    let sql = 'SELECT * FROM user';
     conn.query(sql,  function (err, result) {
         if(err){
             res.send({code:1, msg: '查询数据库错误'});
@@ -33,7 +33,7 @@ function login(req, res) {
 
         for (let i = 0; i < result.length; i++) {
             if (result[i].account === loginData.account && result[i].pwd === loginData.pwd) {
-                LoginResult = {code:0,msg:'登录成功'};
+                LoginResult = {code:0,msg:'登录成功',data:{user_id: result[i].user_id,nick: result[i].nick}};
                 break;
             }
         }
@@ -43,21 +43,41 @@ function login(req, res) {
 
 function reg(req, res) {
     console.log("req.body: ", req.body);
-    let sql = "INSERT INTO reg(nick, account, pwd) VALUES(?,?,?)";
-    let sqlVal = [req.body.nick, req.body.account, req.body.pwd];
 
-    conn.query(sql, sqlVal, function (err, result) {
-        if (err) {
-            res.send({code:1, msg: err});
-            console.log("err: ", err);
-        } else {
-            res.send({code:0,msg: '注册成功'});
+    // 查询用户名是否已经存在
+    conn.query('SELECT * FROM user',  function (err, result) {
+        if(err){
+            res.send({code:1, msg: '查询数据库错误'});
+            console.log('[SELECT ERROR] - ',err.message);
+            return;
         }
-    })
+        for (let i = 0; i < result.length; i++) {
+            if (result[i].account === req.body.account) {
+                res.send({code:1,msg:'用户名已经存在'});
+                console.log("用户名已经存在");
+                return;
+            }
+        }
+        console.log("register");
+        register();
+    });
+
+    function register() {
+        let sql = "INSERT INTO user(nick, account, pwd) VALUES(?,?,?)";
+        let sqlVal = [req.body.nick, req.body.account, req.body.pwd];
+        conn.query(sql, sqlVal, function (err, result) {
+            if (err) {
+                res.send({code:1, msg: err});
+                console.log("err: ", err);
+            } else {
+                res.send({code:0,msg: '注册成功'});
+            }
+        })
+    }
 }
 
 function getStudent(req, res) {
-    conn.query('select * from student ', function (err, result) {
+    conn.query('select * from student where user_id =' + req.params.user_id, function (err, result) {
         if (err) {
             res.send({code:1, msg: err});
             console.log("err: ", err);
@@ -71,8 +91,8 @@ function getStudent(req, res) {
 function postStudent(req, res) {
     console.log("req.body: ", req.body);
     // 有id就修改
-    if (req.body.id) {
-        let sql = 'update student set name=?, age=?, student_number=?, chinese=?, math=?, english=? WHERE id = ' + req.body.id;
+    if (req.body.id) { // 修改不用user_id也没关系
+        let sql = `update student set name=?, age=?, student_number=?, chinese=?, math=?, english=? WHERE user_id = ${req.params.user_id} and id = ${req.body.id}`;
         let sqlVal = [req.body.name, req.body.age, req.body.student_number, req.body.chinese, req.body.math, req.body.english ];
         conn.query(sql, sqlVal, function (err, result) {
             if (err) {
@@ -86,8 +106,8 @@ function postStudent(req, res) {
     }
 
     // 没有id就添加
-    let sql = 'insert into student(name,age,student_number,chinese,math,english) values(?,?,?,?,?,?)';
-    let sqlVal = [req.body.name, req.body.age, req.body.student_number, req.body.chinese, req.body.math, req.body.english];
+    let sql = 'insert into student(user_id,name,age,student_number,chinese,math,english) values(?,?,?,?,?,?,?)';
+    let sqlVal = [req.params.user_id, req.body.name, req.body.age, req.body.student_number, req.body.chinese, req.body.math, req.body.english];
     conn.query(sql, sqlVal, function (err, result) {
         if (err) {
             console.log("err: ", err);
@@ -98,9 +118,9 @@ function postStudent(req, res) {
     })
 }
 
-function deleteStudent(req, res) {
+function deleteStudent(req, res) { // 删除不用user_id也没关系
     console.log("req.body.id: ", req.body.id);
-    conn.query('DELETE FROM student where id= ' + req.body.id, function (err, result) {
+    conn.query(`DELETE FROM student where user_id = ${req.params.user_id} and id= ${req.body.id}`, function (err, result) {
         if (err) {
             res.send({code:1, msg: err});
             console.log("err: ", err);

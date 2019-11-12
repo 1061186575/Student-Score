@@ -3,9 +3,7 @@ var path = require('path');
 var app = express();
 var apiRouter = require('./routes/api');
 
-/**
- * 加入这三行代码，才可以在req.body内拿到前端发过来的数据
- */
+
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());//数据JSON类型
 app.use(bodyParser.urlencoded({ extended: false }));//解析post请求数据

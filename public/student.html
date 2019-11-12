@@ -94,14 +94,16 @@
         opacity: 0.4;
         z-index: 998;
     }
+
 </style>
+<h1 align="center">欢迎回来: <span id="welcome"></span></h1>
 
 <div id="shade" hidden></div>
 <button class="button add_button" style="background-color: rgb(30,159,225);margin: 50px;">添加学生</button>
 <button class="button btn-danger" onclick="location.href='./login.html'">退出登录</button>
 
 <div id="app">
-    <div id="show" >
+    <div id="show">
         <table>
             <thead>
             <tr>
@@ -165,9 +167,12 @@
     window.onload = function () {
         $$('#string_template').hidden = false;
         let student_str = $$('#string_template').outerHTML;
+        let user_info = JSON.parse(localStorage.getItem('user_info'));
+        let user_id = user_info.user_id;
+        $$('#welcome').textContent = user_info.nick;
 
         function getData() {
-            myFetch('/api/getStudent').then(data => {
+            myFetch(`/api/getStudent/${user_id}`).then(data => {
                 if (data.code === 0) {
                     vFor('append_place', data.data, student_str);
                 }
@@ -258,7 +263,7 @@
         // 添加或者修改学生信息
         function postData(postData) {
 
-            myFetch('/api/postStudent', postData, 'post').then(data => {
+            myFetch(`/api/postStudent/${user_id}`, postData, 'post').then(data => {
                 if (data.code === 0) {
                     close_box();
                     getData();
@@ -283,7 +288,7 @@
         };
         function deleteData(id) {
 
-            myFetch('/api/deleteStudent', {id: id}, 'post').then(data => {
+            myFetch(`/api/deleteStudent/${user_id}`, {id: id}, 'post').then(data => {
                 if (data.code === 0) {
                     getData();
                 }

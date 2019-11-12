@@ -116,6 +116,7 @@
             myFetch('/api/login', loginData, 'post')
                 .then(data => {
                     if (data.code === 0) {
+                        localStorage.setItem('user_info', JSON.stringify(data.data));
                         location.href = './student.html'
                     } else {
                         alert(data.msg);

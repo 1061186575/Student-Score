@@ -25,3 +25,4 @@ export default function vFor(append_place_id, data, string_template) {
     });
     document.getElementById(append_place_id).innerHTML = all_student_str; // 替换后添加到页面
 }
+

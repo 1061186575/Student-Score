@@ -1,4 +1,4 @@
-.zp-input{
+﻿.zp-input{
     font-size: 16px;
     width: 315px;
     height: 30px;
@@ -90,7 +90,7 @@ input[disabled] {
     box-shadow: 0 3px #666;
     transform: translateY(3px);
 }
-#all h1[data-art] {
+#all [data-font='art'] {
     text-shadow:0 -1px 5px rgba(0,0,0,.4);
     color: #60497C;
     font-size: 2em;

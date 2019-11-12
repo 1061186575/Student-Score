@@ -32,9 +32,9 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 			},
 			mode: "cors",
 			cache: "force-cache"
-		}
+		};
 
-		if (type === 'POST') {
+		if (type === 'POST' || type === 'PUT') {
 			Object.defineProperty(requestConfig, 'body', {
 				value: JSON.stringify(data)
 			})
@@ -56,7 +56,7 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 			}
 
 			let sendData = '';
-			if (type === 'POST') {
+			if (type === 'POST' || type === "PUT") {
 				sendData = JSON.stringify(data);
 			}
 
