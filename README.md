@@ -25,3 +25,4 @@ npm run dev
 
 
 
+(sql部分直接select * from table where xxx = 'xx' 就可以了, 而不用把数据取出来再遍历)
